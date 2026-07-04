@@ -12,7 +12,7 @@ class Player:
         self.on_ground = False
         self.animation_state = "idle"
         self.face_left = False
-        self.animation = screenanimation.ScreenAnimation(x, y, w, h, asset_dir=asset_dir , spritesheet="spritesheet.png")
+        self.animation = screenanimation.ScreenAnimation(x, y, w, h, asset_dir=asset_dir , spritesheet="spritesheet.webp")
 
     def move(self, Frames):
         dx = 0

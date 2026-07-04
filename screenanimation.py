@@ -19,9 +19,8 @@ class ScreenAnimation:
         self.spritesheet = self._load_spritesheet(spritesheet)
         self.sprites = self._load_sprites_json("sprites.json")
 
-        idle_frames = self._extract_frames_from_y(0)[0]
-
-        self.animations["idle"] = idle_frames
+        idle_frames = self._extract_frames_from_y(0)
+        self.animations["idle"] = idle_frames if idle_frames else [self._load_fallback_frame()]
         self.animations["run"] = self._extract_frames_from_y(0) or self.animations["idle"]
         self.animations["jump"] = self._extract_frames_from_y(720) or self.animations["idle"][:1]
         self.animations["fall"] = self._extract_frames_from_y(240) or self.animations["idle"][:1]
