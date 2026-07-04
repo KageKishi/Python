@@ -4,7 +4,6 @@ from mapBuilder import *
 import player
 from player import *
 
-
 WIDTH, HEIGHT = 800, 800
 Frames = [
     pygame.Rect(0, 0, 5, HEIGHT - 5), 
@@ -19,10 +18,8 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 
 running = True
-background = pygame.transform.smoothscale(pygame.image.load("Background.jpg").convert(), (800, 600))
-background_rect = background.get_rect(topleft = (0, 0))
-Player = player.Player(10, 10, 25, 25)
-
+background = pygame.transform.smoothscale(pygame.image.load("assets/background.jpg").convert(), screen.get_size())
+Player = player.Player(20, 20, 70, 100, asset_dir="assets")
 while running:
     
     for event in pygame.event.get():
@@ -33,9 +30,8 @@ while running:
                 Player.getJump(True)
     
     screen.fill((0, 0, 0))
-    screen.blit(background, background_rect)
+    screen.blit(background, (0, 0))
     Player.move(Frames)
-
     for frame in Frames:
         pygame.draw.rect(screen, (255, 255, 255), frame)
     Player.draw(screen)

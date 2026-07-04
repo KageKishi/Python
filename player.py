@@ -1,20 +1,23 @@
 import pygame
 import mapBuilder
 from mapBuilder import *
+import screenanimation
 
 class Player:
-    def __init__(self, x, y, w, h):
+    def __init__(self, x, y, w, h, asset_dir="."):
         self.player = pygame.Rect(x, y, w, h)
-        self.color = 'Blue'
         self.speed = 5
         self.gravity = 0.5
         self.jump_count = 2
         self.on_ground = False
+        self.animation_state = "idle"
+        self.face_left = False
+        self.animation = screenanimation.ScreenAnimation(x, y, w, h, asset_dir=asset_dir , spritesheet="spritesheet.png")
 
     def move(self, Frames):
         dx = 0
-        dy = 0
         dv = 0
+        was_on_ground = self.on_ground
         self.gravity += 0.3
         
         keys = pygame.key.get_pressed()
@@ -22,8 +25,10 @@ class Player:
             dv += 5
         if keys[pygame.K_d]:
             dx += self.speed + dv
+            self.face_left = False
         if keys[pygame.K_a]:
             dx -= self.speed + dv
+            self.face_left = True
         if keys[pygame.K_s]:
             self.gravity = min(self.gravity + 1, 15)
         
@@ -48,6 +53,8 @@ class Player:
                     self.player.right = frame.left
                 elif dx < 0:
                     self.player.left = frame.right
+
+        self.on_ground = False
                     
         self.player.y += self.gravity    
                
@@ -73,6 +80,21 @@ class Player:
                     self.player.top = wall.new_wall.bottom
                     self.gravity = 0
 
+        grounded = self.on_ground or was_on_ground
+
+        if self.gravity < 0:
+            self.animation_state = "jump"
+        elif not grounded:
+            self.animation_state = "fall"
+        if dx != 0:
+            self.animation_state = "run"
+        else:
+            self.animation_state = "idle"
+
+        self.animation.set_state(self.animation_state)
+        self.animation.set_facing_left(self.face_left)
+        self.animation.sync(self.player)
+
     def getJump(self, isJump):
         if isJump and self.jump_count > 0:
             self.gravity = -10
@@ -80,4 +102,4 @@ class Player:
             self.on_ground = False
 
     def draw(self, screen):
-        pygame.draw.rect(screen, self.color, self.player)
+        self.animation.update(screen, self.player)
