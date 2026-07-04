@@ -45,7 +45,11 @@ class Player:
             if self.player.colliderect(door[0].new_door):
                 mapBuilder.walls, mapBuilder.doors = mapBuilder.load_map(door[1])
                 self.player.x, self.player.y = door[2]
-                break
+                self.gravity = 0
+                self.on_ground = False
+                self.jump_count = 2
+                self.animation.sync(self.player)
+                return
 
         for frame in Frames:
             if self.player.colliderect(frame):

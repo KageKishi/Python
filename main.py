@@ -19,7 +19,7 @@ clock = pygame.time.Clock()
 
 running = True
 background = pygame.transform.smoothscale(pygame.image.load("assets/background.jpg").convert(), screen.get_size())
-Player = player.Player(20, 20, 70, 100, asset_dir="assets")
+Player = player.Player(20, 20, 40, 50, asset_dir="assets")
 while running:
     
     for event in pygame.event.get():
