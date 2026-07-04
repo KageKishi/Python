@@ -19,20 +19,23 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 
 running = True
-
+background = pygame.transform.smoothscale(pygame.image.load("Background.jpg").convert(), (800, 600))
+background_rect = background.get_rect(topleft = (0, 0))
 Player = player.Player(10, 10, 25, 25)
 
 while running:
+    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 Player.getJump(True)
-                
-    Player.move(Frames)
     
     screen.fill((0, 0, 0))
+    screen.blit(background, background_rect)
+    Player.move(Frames)
+
     for frame in Frames:
         pygame.draw.rect(screen, (255, 255, 255), frame)
     Player.draw(screen)
