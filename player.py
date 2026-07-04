@@ -12,7 +12,7 @@ class Player:
         self.on_ground = False
         self.animation_state = "idle"
         self.face_left = False
-        self.animation = screenanimation.ScreenAnimation(x, y, w, h, asset_dir=asset_dir , spritesheet="spritesheet.webp")
+        self.animation = screenanimation.ScreenAnimation(x, y, w, h, asset_dir=asset_dir , spritesheet="SpriteSheet.png")
 
     def move(self, Frames):
         dx = 0
@@ -86,7 +86,7 @@ class Player:
             self.animation_state = "jump"
         elif not grounded:
             self.animation_state = "fall"
-        if dx != 0:
+        elif dx != 0:
             self.animation_state = "run"
         else:
             self.animation_state = "idle"
