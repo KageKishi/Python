@@ -2,18 +2,29 @@ import pygame
 import mapBuilder
 from mapBuilder import *
 import screenanimation
+from attack import Attack
+from destructibleentity import DestructibleEntity
 
-class Player:
+class Player(Attack , DestructibleEntity):
     def __init__(self, x, y, w, h, asset_dir="."):
         self.player = pygame.Rect(x, y, w, h)
         self.speed = 5
         self.gravity = 0.5
+        self.hp = 100
         self.jump_count = 2
         self.on_ground = False
         self.animation_state = "idle"
         self.face_left = False
         self.animation = screenanimation.ScreenAnimation(x, y, w, h, asset_dir=asset_dir , spritesheet="SpriteSheet.png")
+        self.damage = 7
+        if self.face_left:
+            self.weaponhitbox = pygame.rect(x-5 , y , 20 , 20)
+        else:
+            self.weaponhitbox = pygame.rect(x + 5 , y , 20 , 20)
+            Attack.__init__(self.weaponhitbox , self.damage)
+            DestructibleEntity._init_(self.hp)
 
+    
     def move(self, Frames):
         dx = 0
         dv = 0
@@ -31,6 +42,8 @@ class Player:
             self.face_left = True
         if keys[pygame.K_s]:
             self.gravity = min(self.gravity + 1, 15)
+        if keys[pygame.K_i]:
+            self.animation_state = "attack"
         
         self.player.x += dx
         
@@ -92,7 +105,7 @@ class Player:
             self.animation_state = "fall"
         elif dx != 0:
             self.animation_state = "run"
-        else:
+        elif self.animation_state != "attack":
             self.animation_state = "idle"
 
         self.animation.set_state(self.animation_state)

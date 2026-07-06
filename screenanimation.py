@@ -24,7 +24,7 @@ class ScreenAnimation:
         self.animations["run"] = self._extract_frames_from_y(self.sprites.get("0")[:9]) or self.animations["idle"]
         self.animations["jump"] = self._extract_frames_from_y(self.sprites.get("504")[:4]) or self.animations["idle"][:1]
         self.animations["fall"] = self._extract_frames_from_y(self.sprites.get("504")[4:8]) or self.animations["idle"][:1]
-        #self.animations["attack"] = self._extract_frames_from_y(self.sprites.get("320")) or self.animations["idle"]
+        self.animations["attack"] = self._extract_frames_from_y(self.sprites.get("320")[1:6]) or self.animations["idle"]
         #self.animations["hit"] = self._extract_frames_from_y(self.sprites.get("400")) or self.animations["idle"][:1]
         #self.animations["death"] = self._extract_frames_from_y(self.sprites.get("480")) or self.animations["idle"][:1]
         #self.animations["dodge"] = self._extract_frames_from_y(self.sprites.get("800")) or self.animations["idle"]

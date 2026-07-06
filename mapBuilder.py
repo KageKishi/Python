@@ -14,14 +14,17 @@ class Block:
 
     def D_draw(self, screen):
         pygame.draw.rect(screen, self.D_color, self.new_door)
+    def E_draw(self , screen):
+        pygame.draw.rect(screen , self.enemies)
 
 def load_map(map_name):
     map_data = data[map_name]
     walls = [Block(*w) for w in map_data["Walls"]]
     doors = [(Block(*d["wall"]), d["leadsTo"], d["spawn"]) for d in map_data["Doors"]]
-    return walls, doors
+    enemies = [(Block(*e["Location"]), e["Hp"], e["Damage"])for e in map_data["Enemies"]]
+    return walls, doors , enemies
 
 with open('maps.json', 'r') as file:
     data = json.load(file)
     
-walls, doors = load_map("Map1")
+walls, doors , enemies = load_map("Map1")

@@ -4,7 +4,7 @@ from mapBuilder import *
 import player
 from player import *
 
-WIDTH, HEIGHT = 800, 800
+WIDTH, HEIGHT = 800 , 800
 Frames = [
     pygame.Rect(0, 0, 5, HEIGHT - 5), 
     pygame.Rect(0, HEIGHT - 5, WIDTH - 5, 5), 
@@ -40,7 +40,8 @@ while running:
         wall.W_draw(screen)
     for door in mapBuilder.doors:
         door[0].D_draw(screen)
-    
+    for enemy in mapBuilder.enemies:
+        enemy[0].E_draw(screen)
     pygame.display.flip()
     clock.tick(60)
     
