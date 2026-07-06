@@ -10,19 +10,28 @@ class Player(Attack , DestructibleEntity):
         self.player = pygame.Rect(x, y, w, h)
         self.speed = 5
         self.gravity = 0.5
-        self.hp = 100
+        self.hitpoint = 100
+        self.damage = 7
         self.jump_count = 2
         self.on_ground = False
         self.animation_state = "idle"
         self.face_left = False
-        self.animation = screenanimation.ScreenAnimation(x, y, w, h, asset_dir=asset_dir , spritesheet="SpriteSheet.png")
+        self.firstAttack = True
+        self.animation = screenanimation.ScreenAnimation(x, y, w, h, asset_dir=asset_dir , spritesheet="SpriteSheet.png" , spritesheet2="SpriteSheet2.png")
         self.damage = 7
         if self.face_left:
-            self.weaponhitbox = pygame.rect(x-5 , y , 20 , 20)
+            self.weaponhitbox = pygame.Rect(x-5 , y , 20 , 20)
         else:
-            self.weaponhitbox = pygame.rect(x + 5 , y , 20 , 20)
-            Attack.__init__(self.weaponhitbox , self.damage)
-            DestructibleEntity._init_(self.hp)
+            self.weaponhitbox = pygame.Rect(x + 5 , y , 20 , 20)
+        self.atk = self.weaponhitbox
+        
+    def Attack(self):
+        if self.firstAttack:
+            self.animation_state = "attack1"
+            self.firstAttack = False
+        else:
+            self.animation_state = "attack2"
+            self.firstAttack = True
 
     
     def move(self, Frames):
@@ -42,8 +51,8 @@ class Player(Attack , DestructibleEntity):
             self.face_left = True
         if keys[pygame.K_s]:
             self.gravity = min(self.gravity + 1, 15)
-        if keys[pygame.K_i]:
-            self.animation_state = "attack"
+            
+           
         
         self.player.x += dx
         
@@ -105,7 +114,7 @@ class Player(Attack , DestructibleEntity):
             self.animation_state = "fall"
         elif dx != 0:
             self.animation_state = "run"
-        elif self.animation_state != "attack":
+        elif(self.animation_state != "attack1" and self.animation_state != "attack2"):
             self.animation_state = "idle"
 
         self.animation.set_state(self.animation_state)

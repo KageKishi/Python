@@ -5,7 +5,7 @@ import pygame
 
 
 class ScreenAnimation:
-    def __init__(self, x, y, w, h, asset_dir=".", spritesheet="SpriteSheet.png"):
+    def __init__(self, x, y, w, h, asset_dir=".", spritesheet="SpriteSheet.png" ,spritesheet2 = "SpriteSheet.png"):
         self.size = (w, h)
         self.player = pygame.Rect(x, y, w, h)
         self.frame_delay = 10
@@ -15,16 +15,18 @@ class ScreenAnimation:
         self.face_left = False
         self.animations = {}
         self.asset_dir = asset_dir
-
+        self.spritesheet2 = self._load_spritesheet(spritesheet2)
         self.spritesheet = self._load_spritesheet(spritesheet)
         self.sprites = self._load_sprites_json("grouped_arrays.json")
+        self.sprites2 = self._load_sprites_json("sprites.json")
 
         idle_frames = self._extract_frames_from_y(self.sprites.get("784")[:8])
         self.animations["idle"] = idle_frames if idle_frames else [self._load_fallback_frame()]
         self.animations["run"] = self._extract_frames_from_y(self.sprites.get("0")[:9]) or self.animations["idle"]
         self.animations["jump"] = self._extract_frames_from_y(self.sprites.get("504")[:4]) or self.animations["idle"][:1]
         self.animations["fall"] = self._extract_frames_from_y(self.sprites.get("504")[4:8]) or self.animations["idle"][:1]
-        self.animations["attack"] = self._extract_frames_from_y(self.sprites.get("320")[1:6]) or self.animations["idle"]
+        self.animations["attack1"] = self._extract_frames_from_y2(self.sprites2.get("320")[:3]) or self.animations["idle"]
+        self.animations["attack2"] = self._extract_frames_from_y2(self.sprites2.get("320")[3:6]) or self.animations["idle"]
         #self.animations["hit"] = self._extract_frames_from_y(self.sprites.get("400")) or self.animations["idle"][:1]
         #self.animations["death"] = self._extract_frames_from_y(self.sprites.get("480")) or self.animations["idle"][:1]
         #self.animations["dodge"] = self._extract_frames_from_y(self.sprites.get("800")) or self.animations["idle"]
@@ -58,7 +60,24 @@ class ScreenAnimation:
             frames.append(pygame.transform.smoothscale(cropped.copy(), self.size))
 
         return frames
+    
+    def _extract_frames_from_y2(self, y):
+        frames = []
+        if isinstance(y, list):
+            rects = y
+        else:
+            y_key = str(y)
+            if y_key not in self.sprites2:
+                return frames
+            rects = self.sprites2[y_key]
 
+        for rect in rects:
+            x, sprite_y, w, h = rect
+            cropped = self.spritesheet2.subsurface(pygame.Rect(x, sprite_y, w, h))
+            frames.append(pygame.transform.smoothscale(cropped.copy(), self.size))
+
+        return frames
+    
     def _load_fallback_frame(self):
         image = self._extract_frames_from_y(self.sprites.get("960"))[0] if self._extract_frames_from_y(self.sprites.get("960")) else pygame.Surface(self.size, pygame.SRCALPHA)
         return pygame.transform.smoothscale(image, self.size)

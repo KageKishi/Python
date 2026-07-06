@@ -28,6 +28,8 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 Player.getJump(True)
+            if event.key == pygame.K_i:
+                Player.Attack()
     
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
