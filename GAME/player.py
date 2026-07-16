@@ -17,6 +17,7 @@ class Player(Attack , DestructibleEntity):
         self.animation_state = "idle"
         self.face_left = False
         self.firstAttack = True
+        self.isalive = True
         self.animation = screenanimation.ScreenAnimation(x, y, w, h, asset_dir=asset_dir , spritesheet="SpriteSheet.png" , spritesheet2="SpriteSheet2.png")
         self.damage = 7
         if self.face_left:
@@ -65,7 +66,7 @@ class Player(Attack , DestructibleEntity):
             
         for door in mapBuilder.doors:
             if self.player.colliderect(door[0].new_door):
-                mapBuilder.walls, mapBuilder.doors = mapBuilder.load_map(door[1])
+                mapBuilder.walls, mapBuilder.doors, mapBuilder.enemies = mapBuilder.load_map(door[1])
                 self.player.x, self.player.y = door[2]
                 self.gravity = 0
                 self.on_ground = False
@@ -129,7 +130,3 @@ class Player(Attack , DestructibleEntity):
 
     def draw(self, screen):
         self.animation.update(screen, self.player)
-        if(self.animation.animations["attack1"] == self.animation._extract_frames_from_y("320")[3]):
-            self.animation_state = "idle"
-        if(self.animation.animations["attack2"] == self.animation._extract_frames_from_y("320")[6]):
-            self.animation_state = "idle"

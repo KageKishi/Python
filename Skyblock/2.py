@@ -1,5 +1,5 @@
-import Calculator
-from Calculator import main
+import Skyblock.Calculator as Calculator
+from Skyblock.Calculator import main
 import json
 
 with open('RECIPES.json', 'r') as file:
