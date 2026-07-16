@@ -2,13 +2,16 @@
     "HYPERION1": {
         "HOT_POTATO_BOOK": 10,
         "RECOMBOBULATOR_3000": 1,
-        "ENCHANTED_LAPIS_LAZULI": 5,
-        "ENCHANTED_GOLD_BLOCK": 3
+        "ENCHANTMENT_CHAMPION_1": 1,
+        "WITHER_CATALYST": 24,
+        "TITANIC_EXP_BOTTLE": 10,
+        "FIRST_MASTER_STAR": 1,
+        "SEVERED_HAND": 1
     },
     "HYPERION2": {
         "HOT_POTATO_BOOK": 10,
         "RECOMBOBULATOR_3000": 1,
-        "ENCHANTED_LAPIS_LAZULI": 5,
+        "ENCHANTMENT_CHAMPION_1": 1,
         "ENCHANTED_GOLD_BLOCK": 3
     }
 }
