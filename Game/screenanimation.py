@@ -11,6 +11,7 @@ class ScreenAnimation:
         self.frame_delay = 10
         self.frame_timer = 0
         self.frame_index = 0
+        self.animation_finished = False
         self.state = "idle"
         self.face_left = False
         self.animations = {}
@@ -27,6 +28,7 @@ class ScreenAnimation:
         self.animations["fall"] = self._extract_frames_from_y(self.sprites.get("504")[4:8]) or self.animations["idle"][:1]
         self.animations["attack1"] = self._extract_frames_from_y2(self.sprites2.get("320")[:3]) or self.animations["idle"]
         self.animations["attack2"] = self._extract_frames_from_y2(self.sprites2.get("320")[3:6]) or self.animations["idle"]
+        self.one_shot_states = {"attack1", "attack2"}
         #self.animations["hit"] = self._extract_frames_from_y(self.sprites.get("400")) or self.animations["idle"][:1]
         #self.animations["death"] = self._extract_frames_from_y(self.sprites.get("480")) or self.animations["idle"][:1]
         #self.animations["dodge"] = self._extract_frames_from_y(self.sprites.get("800")) or self.animations["idle"]
@@ -90,6 +92,7 @@ class ScreenAnimation:
             self.state = state
             self.frame_index = 0
             self.frame_timer = 0
+            self.animation_finished = False
 
     def sync(self, rect):
         self.player.topleft = rect.topleft
@@ -107,7 +110,11 @@ class ScreenAnimation:
                 self.frame_timer = 0
                 self.frame_index += 1
                 if self.frame_index >= len(frames):
-                    self.frame_index = 0
+                    if self.state in self.one_shot_states:
+                        self.frame_index = len(frames) - 1
+                        self.animation_finished = True
+                    else:
+                        self.frame_index = 0
 
         frame = frames[self.frame_index]
         if self.face_left:

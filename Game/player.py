@@ -35,6 +35,12 @@ class Player(Attack , DestructibleEntity):
 
     
     def move(self, Frames):
+        if (
+            self.animation_state in ("attack1", "attack2")
+            and self.animation.animation_finished
+        ):
+            self.animation_state = "idle"
+
         dx = 0
         dv = 0
         was_on_ground = self.on_ground
@@ -129,7 +135,3 @@ class Player(Attack , DestructibleEntity):
 
     def draw(self, screen):
         self.animation.update(screen, self.player)
-        if(self.animation.animations["attack1"] == self.animation._extract_frames_from_y("320")[3]):
-            self.animation_state = "idle"
-        if(self.animation.animations["attack2"] == self.animation._extract_frames_from_y("320")[6]):
-            self.animation_state = "idle"
