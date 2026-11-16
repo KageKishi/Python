@@ -3,9 +3,8 @@ import matplotlib.pyplot as plt
 
 def null_space(A, tol=1e-10):
     _, s, Vt = np.linalg.svd(A)
-    r = int(np.sum(s > tol))
-    return Vt[r:].T# columns span N(A)
-
+    rank = int(np.sum(s > tol))
+    return Vt[rank:].T# columns span N(A)
 
 A = np.array([[1, 2, 1],
               [2, 3, 1],
@@ -31,7 +30,7 @@ ax = fig.add_subplot(projection="3d")
 ax.plot(*np.outer(direction, np.array([-3, 3])), color="tab:red", lw=3,
         label="N(A) = Span(1, −1, 1)")
 ax.plot_surface(*plane, alpha=0.3, color="tab:blue")
-ax.plot([], [], color="tab:blue", lw=6, alpha=0.4, label="row space (⊥ to N(A))")
+ax.plot([], [], color="tab:blue", lw=6, alpha=0.4, label="row space/Rank(A) = 2")
 ax.set(xlabel="x", ylabel="y", zlabel="z", title="Null space: all x with Ax = 0")
 ax.legend(loc="upper left")
 plt.tight_layout()
